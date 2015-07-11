@@ -17,7 +17,7 @@ fi
 # add source
 	dv=$(cut -d. -f1 /etc/debian_version)
 	if [ "$dv" = "7" ]; then
-	echo "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/sources.list
+	echo -e "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/sources.list
 	elif [ "$dv" = "6" ]; then
     echo -e 'deb http://http.debian.net/debian-backports squeeze-backports(-sloppy) main' >> /etc/apt/sources.list
 	fi
@@ -25,7 +25,7 @@ fi
 apt-get update
 
 # install packges
-dv=$(cut -d. -f1 /etc/debian_version)
+    dv=$(cut -d. -f1 /etc/debian_version)
 	if [ "$dv" = "7" ]; then
 	apt-get -t wheezy-backports install libgnutls28-dev
 	elif [ "$dv" = "6" ]; then
@@ -38,11 +38,11 @@ apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin build-essential li
 #ssl certificate
 
 #download ocserv and compile
-wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.9.0.1.tar.xz
-tar xf ocserv-0.10.6.tar.xz
-rm ocserv-0.10.6.tar.xz
-cd ocserv-0.10.6
-./configure --prefix=/usr --sysconfdir=/etc --enable-linux-namespaces
+wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.5.tar.xz
+tar xf ocserv-0.10.5.tar.xz
+rm ocserv-0.10.5.tar.xz
+cd ocserv-0.10.5
+./configure --prefix=/usr --sysconfdir=/etc 
 make && make install
 
 #generate CA key
@@ -79,26 +79,26 @@ cp server-key.pem /etc/ssl/private
 
 #download and config ocserv
 mkdir /etc/ocserv 
-
-
-
 cd /etc/ocserv
 
+wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/ocserv.conf
+
 mkdir defaults
-cat << _EOF_ >/etc/ocserv/defaults/group.conf
+
+cat << EOF >/etc/ocserv/defaults/group.conf
 	route = 0.0.0.0/128.0.0.0
 	route = 128.0.0.0/128.0.0.0
-_EOF_
+EOF
 
 mkdir config-per-group
 cd config-per-group
-wget https://github.com/rankjie/anyconnect-gfw-list/raw/master/gfwiplist.txt -O routed
+wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/gfwiplist.txt -O routed
 
 #add user and password
 ocpasswd -g global,routed -c /etc/ocserv/ocpasswd tennfy
 
 #set autostart
-wget https://gist.github.com/kevinzhow/9661623/raw/9d2c80e7a86eed514165bf7c9fce777bfe775f37/ocserv -O /etc/init.d/ocserv
+wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/ocserv -O /etc/init.d/ocserv
 chmod 755 /etc/init.d/ocserv
 update-rc.d ocserv defaults
 
@@ -120,3 +120,6 @@ sed -i 's/exit\ 0/#exit\ 0/' /etc/rc.local
 echo iptables -t nat -A POSTROUTING -s 192.168.10.0/24 -o $INTERFACE -j MASQUERADE >> /etc/rc.local
 echo iptables -A FORWARD -s 192.168.10.0/24 -j ACCEPT >> /etc/rc.local
 echo exit 0 >> /etc/rc.local
+
+#start ocserv
+/etc/init.d/ocserv start
