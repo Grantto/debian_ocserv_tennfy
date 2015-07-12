@@ -11,10 +11,10 @@ bash debian_ocserv_tennfy.sh
 
 # Use method 
 
-server ip:   your vps ip + 999
+server ip:   your vps ip:999
 
 #Notes
 
 1. During the installation, it will require you input the username and password
 
-2. This script supports router tables
+2. This script supports router tables, you can use ip.cn or ipip.net to test your ip
