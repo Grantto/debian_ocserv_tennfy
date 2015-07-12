@@ -23,7 +23,7 @@ fi
 	echo -e 'deb http://security.debian.org/ testing/updates main' >> /etc/apt/sources.list
 	fi
 # update source
-apt-get update
+apt-get update 
 
 # install packges
     dv=$(cut -d. -f1 /etc/debian_version)
@@ -35,7 +35,7 @@ apt-get update
 	elif [ "$dv" = "6" ]; then
     apt-get -t squeeze-backports install libgnutls28-dev
 	#install other packges
-	apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin libreadline-dev -y
+	apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin libreadline-dev build-essential -y
 	
 	apt-get install gnutls-bin gnutls-doc
 	fi
@@ -44,7 +44,7 @@ apt-get update
 
 #download ocserv and compile
 wget ftp://ftp.infradead.org/pub/ocserv/ocserv-0.10.5.tar.xz
-tar xf ocserv-0.10.5.tar.xz
+tar xvf ocserv-0.10.5.tar.xz
 rm ocserv-0.10.5.tar.xz
 cd ocserv-0.10.5
 ./configure --prefix=/usr --sysconfdir=/etc 
