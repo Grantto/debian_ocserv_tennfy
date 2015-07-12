@@ -53,8 +53,8 @@ make && make install
 #generate CA key
 certtool --generate-privkey --outfile ca-key.pem
 cat << _EOF_ >ca.tmpl
-	cn = "VPN CA"
-	organization = "Big Corp"
+	cn = "www.tennfy.com"
+	organization = "TENNFY WU"
 	serial = 1
 	expiration_days = 9999
 	ca
@@ -67,8 +67,8 @@ certtool --generate-self-signed --load-privkey ca-key.pem --template ca.tmpl --o
  
 certtool --generate-privkey --outfile server-key.pem
 cat << _EOF_ >server.tmpl 
-	cn = "www.example.com"
-	organization = "MyCompany"
+	cn = "www.tennfy.com"
+	organization = "TENNFY WU"
 	expiration_days = 9999
 	signing_key
 	encryption_key
@@ -101,7 +101,10 @@ cd config-per-group
 wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/gfwiplist.txt -O routed
 
 #add user and password
-echo "input ocserv username(like tennfy):"
+echo "#############################################################"
+echo "# Please input the username and password"
+echo "#############################################################"
+echo "input ocserv username(for example: tennfy):"
 read username
 echo "input ocserv password(please input twice):"
 ocpasswd -g global,routed -c /etc/ocserv/ocpasswd $username
