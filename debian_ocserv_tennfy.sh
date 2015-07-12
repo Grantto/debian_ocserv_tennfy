@@ -21,6 +21,7 @@ fi
 	elif [ "$dv" = "6" ]; then
 	echo -e 'deb http://mirrors.digitalocean.com/debian testing main' >> /etc/apt/sources.list
 	echo -e 'deb http://security.debian.org/ testing/updates main' >> /etc/apt/sources.list
+	fi
 # update source
 apt-get update
 
