@@ -19,8 +19,8 @@ fi
 	if [ "$dv" = "7" ]; then
 	echo -e "deb http://http.debian.net/debian wheezy-backports main" >> /etc/apt/sources.list
 	elif [ "$dv" = "6" ]; then
-    echo -e 'deb http://http.debian.net/debian-backports squeeze-backports(-sloppy) main' >> /etc/apt/sources.list
-	fi
+	echo -e 'deb http://mirrors.digitalocean.com/debian testing main' >> /etc/apt/sources.list
+	echo -e 'deb http://security.debian.org/ testing/updates main' >> /etc/apt/sources.list
 # update source
 apt-get update
 
@@ -28,12 +28,16 @@ apt-get update
     dv=$(cut -d. -f1 /etc/debian_version)
 	if [ "$dv" = "7" ]; then
 	apt-get -t wheezy-backports install libgnutls28-dev
+	
+	#install other packges
+    apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin build-essential libwrap0-dev libpam0g-dev libdbus-1-dev libreadline-dev libnl-route-3-dev libprotobuf-c0-dev libpcl1-dev libopts25-dev autogen libseccomp-dev liblz4-dev git build-essential -y
 	elif [ "$dv" = "6" ]; then
     apt-get -t squeeze-backports install libgnutls28-dev
-	fi
+	#install other packges
+	apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin libreadline-dev -y
 	
-#install other packges
-apt-get install libgmp3-dev m4 gcc pkg-config make gnutls-bin build-essential libwrap0-dev libpam0g-dev libdbus-1-dev libreadline-dev libnl-route-3-dev libprotobuf-c0-dev libpcl1-dev libopts25-dev autogen libseccomp-dev liblz4-dev git build-essential -y
+	apt-get install gnutls-bin gnutls-doc
+	fi
 
 #ssl certificate
 
@@ -83,6 +87,7 @@ cd /etc/ocserv
 
 wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/ocserv.conf
 
+#set router tables
 mkdir defaults
 
 cat << EOF >/etc/ocserv/defaults/group.conf
@@ -95,7 +100,10 @@ cd config-per-group
 wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/gfwiplist.txt -O routed
 
 #add user and password
-ocpasswd -g global,routed -c /etc/ocserv/ocpasswd tennfy
+echo "input ocserv username(like tennfy):"
+read username
+echo "input ocserv password(please input twice):"
+ocpasswd -g global,routed -c /etc/ocserv/ocpasswd $username
 
 #set autostart
 wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/ocserv -O /etc/init.d/ocserv
@@ -123,3 +131,7 @@ echo exit 0 >> /etc/rc.local
 
 #start ocserv
 /etc/init.d/ocserv start
+
+echo "-----------" &&
+echo "install successfully!" &&
+echo "-----------"
