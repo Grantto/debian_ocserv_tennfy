@@ -7,4 +7,8 @@ wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocse
 chmod a+x debian_ocserv_tennfy.sh
 bash debian_ocserv_tennfy.sh
 
-This script support router tables
+Notes
+
+During the installation, it will require you input the username and password
+
+This script supports router tables
