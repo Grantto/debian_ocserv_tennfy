@@ -1,7 +1,7 @@
 # debian_ocserv_tennfy
 one-click ocserv install  script in debian 6 or 7
 
-User Guideline
+# installation
 
 wget --no-check-certificate https://raw.githubusercontent.com/tennfy/debian_ocserv_tennfy/master/debian_ocserv_tennfy.sh
 
@@ -9,8 +9,12 @@ chmod a+x debian_ocserv_tennfy.sh
 
 bash debian_ocserv_tennfy.sh
 
-Notes
+# Use method 
 
-During the installation, it will require you input the username and password
+server ip:   your vps ip + 999
 
-This script supports router tables
+#Notes
+
+1. During the installation, it will require you input the username and password
+
+2. This script supports router tables
